@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 
+
 def connect_db(app):
     """Connect to database."""
 
@@ -37,6 +38,10 @@ class User(db.Model):
     last_name = db.Column(db.String(30),
                             nullable=False)
 
+    notes = db.relationship('Note',
+                            cascade="all,delete",
+                            backref='notes')
+
     def __repr__(self):
         return f'<User {self.username} {self.first_name} {self.last_name} >'
 
@@ -47,7 +52,7 @@ class User(db.Model):
         hash = bcrypt.generate_password_hash(pwd).decode('utf8')
 
         return cls(
-            username=username, 
+            username=username,
             password=hash,
             first_name=first_name,
             last_name=last_name,
@@ -68,3 +73,30 @@ class User(db.Model):
             return u
         else:
             return False
+
+# Note model should have:
+# tablename of notes
+# id, primary key, autoincrementing int
+# title, string with limit of 100
+# content, nullable is false, text type
+# owner, foreign key referencing user.username
+
+
+class Note(db.Model):
+
+    __tablename__ = "notes"
+
+    id = db.Column(
+                    db.Integer,
+                    primary_key=True,
+                    autoincrement=True)
+    title = db.Column(db.String(100),
+                        nullable=False)
+    content = db.Column(db.Text,
+                        nullable=False)
+    owner = db.Column(
+                    db.ForeignKey("users.username"),
+                    nullable=False)
+
+    def __repr__(self):
+        return f'<Note {self.id} {self.owner} {self.title} >'

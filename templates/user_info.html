@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{user.username}}</h1>
+<h1>{{user.email}}</h1>
+<h1>{{user.first_name}}</h1>
+<h1>{{user.last_name}}</h1>
+
+<ul>
+  {% for note in user.notes %}
+  <li>{{note.title}}
+    <div>
+      {{note.content}}
+      </div>
+  <a href="/notes/{{note.id}}/update">Edit note</a>
+  <a href="/notes/{{note.id}}/delete">Delete note</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<a href = "/users/{{user.username}}/notes/add"> Add new note!
+</a>
+
+<form action= "/users/{{user.username}}/delete" method = "POST">
+  <button type = "submit"> Delete user account</button>
+</form>
+
+
+{% endblock %}

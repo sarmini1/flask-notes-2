@@ -35,3 +35,14 @@ class LoginForm(FlaskForm):
                                     length(max=20)])
     password = PasswordField("Password:",
                             validators=[InputRequired()])
+
+
+class NoteForm(FlaskForm):
+    """Form for creating a new note"""
+
+    title = StringField(
+                        "Title:",
+                        validators=[InputRequired(),
+                                    length(max=100)])
+    content = StringField("Content:",
+                            validators=[InputRequired()])
