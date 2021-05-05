@@ -12,7 +12,7 @@ class RegistrationForm(FlaskForm):
                         "Username:",
                         validators=[InputRequired(),
                                     length(max=20)])
-    password = StringField("Password:",
+    password = PasswordField("Password:",
                             validators=[InputRequired()])
     email = StringField("Email:",
                         validators=[InputRequired(),
@@ -46,3 +46,21 @@ class NoteForm(FlaskForm):
                                     length(max=100)])
     content = StringField("Content:",
                             validators=[InputRequired()])
+
+class NoteUpdateForm(FlaskForm):
+    """Form for updating a note"""
+
+    title = StringField(
+                        "Title:",
+                        validators=[InputRequired(),
+                                    length(max=100)])
+    content = StringField("Content:",
+                            validators=[InputRequired()])
+
+class DeleteForm(FlaskForm):
+    """empty Delete Form for CSRF protection"""
+    #pass
+    # or 
+    #...
+
+

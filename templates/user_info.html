@@ -12,18 +12,26 @@
   <li>{{note.title}}
     <div>
       {{note.content}}
-      </div>
-  <a href="/notes/{{note.id}}/update">Edit note</a>
-  <a href="/notes/{{note.id}}/delete">Delete note</a>
+    </div>
+
+    <a href="/notes/{{note.id}}/update">Edit note</a>
+    <form action="/notes/{{note.id}}/delete" method="POST">
+      {{ form.hidden_tag() }}
+
+      <button type="submit">Delete note</button>
+    </form>
+
   </li>
   {% endfor %}
 </ul>
 
-<a href = "/users/{{user.username}}/notes/add"> Add new note!
+<a href="/users/{{user.username}}/notes/add"> Add new note!
 </a>
 
-<form action= "/users/{{user.username}}/delete" method = "POST">
-  <button type = "submit"> Delete user account</button>
+<form action="/users/{{user.username}}/delete" method="POST">
+
+  {{ form.hidden_tag() }}
+  <button type="submit"> Delete user account</button>
 </form>
 
 

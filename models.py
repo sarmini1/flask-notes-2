@@ -23,6 +23,7 @@ def connect_db(app):
 
 
 class User(db.Model):
+    """create a User"""
 
     __tablename__ = "users"
 
@@ -41,6 +42,7 @@ class User(db.Model):
     notes = db.relationship('Note',
                             cascade="all,delete",
                             backref='notes')
+                            # dont cascade very consequential
 
     def __repr__(self):
         return f'<User {self.username} {self.first_name} {self.last_name} >'
@@ -49,14 +51,17 @@ class User(db.Model):
     def register(cls, username, pwd, first_name, last_name, email):
         """Register user with hash password and return user"""
 
-        hash = bcrypt.generate_password_hash(pwd).decode('utf8')
+        hashed_password = bcrypt.generate_password_hash(pwd).decode('utf8')
 
-        return cls(
+        new_user = cls(
             username=username,
-            password=hash,
+            password=hashed_password,
             first_name=first_name,
             last_name=last_name,
             email=email)
+
+        db.session.add(new_user)
+        
 
     @classmethod
     def authenticate(cls, username, pwd):
@@ -83,6 +88,7 @@ class User(db.Model):
 
 
 class Note(db.Model):
+    """Create a note."""
 
     __tablename__ = "notes"
 
@@ -94,7 +100,7 @@ class Note(db.Model):
                         nullable=False)
     content = db.Column(db.Text,
                         nullable=False)
-    owner = db.Column(
+    owner = db.Column(db.String(20),
                     db.ForeignKey("users.username"),
                     nullable=False)
 
